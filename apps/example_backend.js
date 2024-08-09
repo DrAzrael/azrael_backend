@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 function connectToDatabase() {
     const url = process.env.MONGO_DB_EXAMPLE ?? ''
-    
+    const editModeEnabled = false;
     try {
         mongoose.connect(url, {})
     } catch (err) {
@@ -24,6 +24,16 @@ function connectToDatabase() {
     return
 }
 
+async function timed() {
+    try {
+      console.log("Command started.");
+      await asyncTimer(5000);
+      await followUpCommand();
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+
 connectToDatabase()
 
 const Lesson = mongoose.model('lesson', {
@@ -41,6 +51,21 @@ const Lesson = mongoose.model('lesson', {
 // Define routes for app1
 router.get('/', async (req, resp) => {
     resp.json({ message: 'This is the dir for the example backend' })
+})
+
+router.get('/toggleEdit/:password', async (req, resp) => {
+    if (req.params.id === process.env.DB_EDIT_PASS && editModeEnabled === false){
+        editModeEnabled === true
+        //timer wylacznik
+        resp.json("Edit mode enabled, auto dissable in 3 minutes")
+    }
+    else if(req.params.id === process.env.DB_EDIT_PASS && editModeEnabled === true){
+        editModeEnabled === false
+        resp.json("Edit mode disabled")
+    }
+    else{
+        resp.json(`Task failed Edist mode enabled: ${editModeEnabled}`)
+    }
 })
 
 router.get('/lessons', async (req, resp) => {
