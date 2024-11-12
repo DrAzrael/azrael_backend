@@ -7,7 +7,7 @@ function connectToDatabase() {
     const dbConnection = mongoose.createConnection(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
     dbConnection.once('open', () => {
-        console.log(`Database connected successfully`);
+        console.log(`Database ${url} connected successfully`);
     });
 
     dbConnection.on('error', (err) => {
@@ -38,5 +38,69 @@ router.get('/test', async (req, resp) => {
         resp.status(500).json({ error: 'Failed to fetch lessons' });
     }
 });
+
+router.post('/:pass', async (req, resp) => {
+    try {
+        if(req.params.pass === process.env.DB_EDIT_PASS ?? ''){
+            try {
+                const test = new Test(req.body)
+                await test.save()
+                resp.status(201).json(test)
+            } catch (error) {
+                resp.status(400).json({ message: error.message })
+            }
+        }
+        else{
+            resp.status(401).json({ message: "incorrect database access password" })
+        }
+    }
+    catch (error) {
+        resp.status(400).json({ message: error.message })
+    }
+})
+
+router.delete('/:id/:pass', async (req, resp) => {
+    try {
+        if(req.params.pass === process.env.DB_EDIT_PASS ?? ''){
+            try {
+                await Test.findByIdAndDelete(req.params.id)
+                //to że no content to dobrze, bo tak sie robi
+                resp.status(204).send()
+
+            } catch (error) {
+                resp.status(400).json({ message: error.message })
+            }
+        }
+        else{
+            resp.status(401).json({ message: "incorrect database access password" })
+        }
+    }
+    catch (error) {
+        resp.status(400).json({ message: error.message })
+    }
+})
+
+
+router.put('/:id/:pass', async (req, resp) => {
+    try {
+        if(req.params.pass === process.env.DB_EDIT_PASS ?? ''){
+            try {
+                const test = await Test.findByIdAndUpdate(req.params.id, req.body)
+                resp.status(200).json(test)
+            } catch (error) {
+                resp.status(400).json({ message: error.message })
+            }
+        }
+        else{
+            resp.status(401).json({ message: "incorrect database access password" })
+        }
+    }
+    catch (error) {
+        resp.status(400).json({ message: error.message })
+    }
+    
+})
+
+
 
 module.exports = router;

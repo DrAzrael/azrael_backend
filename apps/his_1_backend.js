@@ -7,7 +7,7 @@ function connectToDatabase() {
     const dbConnection = mongoose.createConnection(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
     dbConnection.once('open', () => {
-        console.log(`Database connected successfully`);
+        console.log(`Database ${url} connected successfully`);
     });
 
     dbConnection.on('error', (err) => {
