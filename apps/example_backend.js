@@ -25,6 +25,7 @@ const Test = dbConnection.model('exmps', {
     data: { type: String, required: true }
 });
 
+//kys
 // Define routes
 router.get('/info', async (req, resp) => {
     resp.json({ message: 'This is the dir for the example backend' });
