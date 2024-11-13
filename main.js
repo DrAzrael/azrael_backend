@@ -13,7 +13,7 @@ const bodyParser = require('body-parser');
 const exampleRoute = require('./apps/example_backend');
 const his1Router = require('./apps/his_1_backend');
 
-// const hiszpański_dział_2 = require('./apps/his_1_backend');
+const hiszpański_dział_2 = require('./apps/span_2');
 
 const app = express();
 
@@ -29,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // app.use('/app1', app1Route);
 app.use('/example', exampleRoute)
 app.use('/his', his1Router)
+app.use('/span2', hiszpański_dział_2)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
