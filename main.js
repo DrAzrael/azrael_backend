@@ -17,6 +17,8 @@ const hiszpański_dział_2 = require('./apps/span_2');
 
 const app = express();
 
+app.use(cors())
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
