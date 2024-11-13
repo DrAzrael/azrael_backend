@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// const cors = require('cors') //to potrzeba przy łączeniu z frontem pamientaj
+const cors = require('cors') //to potrzeba przy łączeniu z frontem pamientaj
 
 
 
